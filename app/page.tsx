@@ -10,7 +10,7 @@ export default function Page() {
 					height: "100%",
 					border: "none",
 				}}
-				title="Dapp Deployer"
+				title="Web3Sim"
 			/>
 		</div>
 	);
