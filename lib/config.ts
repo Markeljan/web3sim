@@ -4,7 +4,7 @@ import { createOpenAI } from "@ai-sdk/openai";
 export const anthropic = createAnthropic();
 export const openai = createOpenAI();
 
-export const MODEL = openai("gpt-4o"); //anthropic("claude-3-5-sonnet-20240620");
+export const MODEL = anthropic("claude-3-5-sonnet-20240620");
 // export const MODEL = openai("gpt-4o");
 
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
