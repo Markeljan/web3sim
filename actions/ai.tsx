@@ -2,12 +2,13 @@
 
 import type { ReactNode } from "react";
 
+import { generateId } from "ai";
 import { createAI, getMutableAIState, streamUI } from "ai/rsc";
 import { z } from "zod";
-import { generateId } from "ai";
 
-import { MODEL, SYSTEM_PROMPT } from "@/lib/config";
+import { ipfsUploadText } from "@/actions/lighthouse";
 import { SmartContractUI } from "@/components/smart-contract-ui";
+import { MODEL, SYSTEM_PROMPT } from "@/lib/config";
 
 export interface ServerMessage {
 	role: "user" | "assistant";
@@ -23,8 +24,6 @@ export interface ClientMessage {
 export const continueGeneration = async (
 	input: string,
 ): Promise<ClientMessage> => {
-	"use server";
-
 	const history = getMutableAIState();
 	history.update((curentState: ServerMessage[]) => [
 		...curentState,
@@ -35,15 +34,9 @@ export const continueGeneration = async (
 		model: MODEL,
 		system: SYSTEM_PROMPT,
 		messages: [...history.get(), { role: "user", content: input }],
-		text: ({ content, done }) => {
-			if (done) {
-				history.done((messages: ServerMessage[]) => [
-					...messages,
-					{ role: "assistant", content } satisfies ServerMessage,
-				]);
-			}
-
-			return <div>{content}</div>;
+		toolChoice: {
+			type: "tool",
+			toolName: "renderHTML",
 		},
 		tools: {
 			renderHTML: {
@@ -61,13 +54,12 @@ export const continueGeneration = async (
 							content: "Done rendering the HTML content",
 						},
 					]);
-
+					await ipfsUploadText(html);
 					return <SmartContractUI html={html} />;
 				},
 			},
 		},
 	});
-
 	return {
 		id: generateId(),
 		role: "assistant",

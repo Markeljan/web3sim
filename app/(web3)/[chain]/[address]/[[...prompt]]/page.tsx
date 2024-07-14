@@ -35,7 +35,7 @@ export default async function Page({
 
 	const sanitizedPrompt = flattenedPrompt
 		? decodeURIComponent(flattenedPrompt)
-		: "Dapp for interacting with the smart contract";
+		: "The user has not provided a theme or design prompt.  Use your greatest levels of creativity to design a theme, color scheme, and layout to complement the smart contract and impress the user.  Use custom tailwind animations.";
 
 	return (
 		<StreamUI

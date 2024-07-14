@@ -1,19 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { generateId } from "ai";
 import { useActions, useUIState } from "ai/rsc";
 
 import type { ClientMessage } from "@/actions/ai";
 import type { ContractInfo } from "@/actions/explorer";
-
-const stringifyRequest = ({
-	prompt,
-	contractData,
-}: { prompt: string; contractData: ContractInfo }) => {
-	return JSON.stringify({ prompt, contractData });
-};
 
 export const StreamUI = ({
 	prompt,
@@ -26,7 +19,7 @@ export const StreamUI = ({
 	const initializeConversation = useCallback(async () => {
 		if (prompt && generation.length === 0) {
 			const message = await continueGeneration(
-				stringifyRequest({ prompt, contractData }),
+				JSON.stringify({ prompt, contractData }),
 			);
 			setGeneration([message]);
 		}
@@ -50,7 +43,7 @@ export const StreamUI = ({
 				id: generateId(),
 				role: "user",
 				display: (
-					<div className="flex w-full justify-center items-center animate-pulse size-8 bg-gray-200 rounded-lg" />
+					<div className="flex w-full h-full justify-center items-center animate-pulse size-24 bg-gray-200 rounded-lg" />
 				),
 			},
 		]);
@@ -66,8 +59,8 @@ export const StreamUI = ({
 	};
 
 	return (
-		<div className="flex flex-col justify-between h-full">
-			<div className="flex-grow overflow-auto p-4">
+		<div className="flex flex-col justify-between items-center w-full h-full">
+			<div className="flex h-full overflow-auto p-4">
 				{generation.map((message: ClientMessage) => (
 					<div key={message.id} className="mb-4 w-full mx-auto">
 						{message.display}
@@ -81,10 +74,10 @@ export const StreamUI = ({
 						value={input}
 						onChange={(event) => setInput(event.target.value)}
 						className="flex-grow mr-2 p-2 border rounded"
-						placeholder="Request changes here..."
+						placeholder="Request changes..."
 					/>
 					<button type="submit" className="bg-blue-500  p-2 rounded">
-						Submit
+						Generate
 					</button>
 				</div>
 			</form>
