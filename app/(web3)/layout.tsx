@@ -12,9 +12,7 @@ export default function Web3Layout({
 				<div className="flex justify-end py-4">
 					<DynamicWidget />
 				</div>
-				<div className="bg-white text-black rounded-lg shadow-md overflow-hidden">
-					{children}
-				</div>
+				<div className="rounded-lg shadow-md overflow-hidden">{children}</div>
 			</div>
 		</div>
 	);

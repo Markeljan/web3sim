@@ -17,6 +17,7 @@ type FetchAbiResponse = {
 };
 
 export type ContractInfo = {
+	chain: string;
 	contractName: string;
 	abi: Abi[];
 	sourceCode: string;
@@ -28,7 +29,7 @@ export async function getContractSourceCode({
 }: {
 	apiUrl: string;
 	address: string;
-}): Promise<ContractInfo> {
+}): Promise<Omit<ContractInfo, "chain">> {
 	const response = await fetch(
 		`${apiUrl}?module=contract&action=getsourcecode&address=${address}`,
 	);
@@ -42,21 +43,18 @@ export async function getContractSourceCode({
 }
 
 // Function to parse the contract information
-function parseContractInfo(result: ContractSourceCodeResult): ContractInfo {
-	try {
-		const contractName = result.ContractName;
-		const abi = JSON.parse(result.ABI);
-		const sourceCode = result.SourceCode;
+const parseContractInfo = (
+	result: ContractSourceCodeResult,
+): Omit<ContractInfo, "chain"> => {
+	const contractName = result.ContractName;
+	const abi = JSON.parse(result.ABI);
+	const sourceCode = result.SourceCode;
 
-		const contractInfo = {
-			contractName,
-			abi,
-			sourceCode,
-		};
+	const contractInfo = {
+		contractName,
+		abi,
+		sourceCode,
+	};
 
-		return contractInfo;
-	} catch (error) {
-		console.error("Error parsing contract information:", error);
-		throw new Error("Failed to parse contract information");
-	}
-}
+	return contractInfo;
+};

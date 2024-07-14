@@ -1,9 +1,11 @@
 "use server";
 
-import { createAI, getMutableAIState, streamUI } from "ai/rsc";
 import type { ReactNode } from "react";
+
+import { createAI, getMutableAIState, streamUI } from "ai/rsc";
 import { z } from "zod";
 import { generateId } from "ai";
+
 import { MODEL, SYSTEM_PROMPT } from "@/lib/config";
 import { SmartContractUI } from "@/components/smart-contract-ui";
 
@@ -22,9 +24,12 @@ export const continueGeneration = async (
 	input: string,
 ): Promise<ClientMessage> => {
 	"use server";
-	console.log("Input:", input);
 
 	const history = getMutableAIState();
+	history.update((curentState: ServerMessage[]) => [
+		...curentState,
+		{ role: "user", content: input } satisfies ServerMessage,
+	]);
 
 	const result = await streamUI({
 		model: MODEL,
@@ -34,7 +39,7 @@ export const continueGeneration = async (
 			if (done) {
 				history.done((messages: ServerMessage[]) => [
 					...messages,
-					{ role: "assistant", content },
+					{ role: "assistant", content } satisfies ServerMessage,
 				]);
 			}
 

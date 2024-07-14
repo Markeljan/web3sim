@@ -25,8 +25,6 @@ export const SmartContractUI = ({ html }: { html: string }) => {
 			functionName,
 			args,
 		});
-
-		console.log(result);
 	};
 
 	// biome-ignore lint/security/noDangerouslySetInnerHtml: yolo

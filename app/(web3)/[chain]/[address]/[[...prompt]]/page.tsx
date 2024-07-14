@@ -21,12 +21,9 @@ export default async function Page({
 	const apiUrl = defaultExplorer
 		? defaultExplorer?.apiUrl || `${defaultExplorer?.url}/api`
 		: undefined;
-	console.log("Chain:", chain);
-	console.log("Chain Match:", viemChain?.name);
-	console.log("explorerApiUrl:", apiUrl);
 
-	if (!apiUrl) {
-		throw new Error("Failed to find explorerApiUrl for chain");
+	if (!apiUrl || !viemChain) {
+		throw new Error(`Failed to find chain or apiUrl for ${chain}`);
 	}
 
 	const flattenedPrompt = prompt?.join(" ");
@@ -35,9 +32,6 @@ export default async function Page({
 		apiUrl,
 		address,
 	});
-	console.log("Contract Name:", contractName);
-	console.log("ABI:", abi.length);
-	console.log("Source Code:", sourceCode.length);
 
 	const sanitizedPrompt = flattenedPrompt
 		? decodeURIComponent(flattenedPrompt)
@@ -47,6 +41,7 @@ export default async function Page({
 		<StreamUI
 			prompt={sanitizedPrompt}
 			contractData={{
+				chain: viemChain.name,
 				contractName,
 				abi,
 				sourceCode,

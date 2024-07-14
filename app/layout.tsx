@@ -8,8 +8,8 @@ import Web3Provider from "@/components/web3-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Web3 Sim",
-	description: "Genertive UI for smart contracts",
+	title: "Web3Sim",
+	description: "Generastive UI for smart contracts",
 };
 
 export default function RootLayout({
