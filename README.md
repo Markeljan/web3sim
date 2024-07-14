@@ -19,7 +19,7 @@ Web3Sim is an AI-powered platform that revolutionizes dApp development, allowing
 
 ## Getting Started
 
-1. Visit [Web3Sim.io](https://www.web3sim.io)
+1. Visit [Web3Sim.io](https://www.web3sim.ai)
 2. Verify your identity using Worldcoin
 3. Input your dApp requirements:
    - Prompt describing desired functionality
