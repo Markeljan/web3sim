@@ -18,14 +18,4 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100vh;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
 }

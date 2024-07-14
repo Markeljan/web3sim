@@ -4,7 +4,8 @@ import { createAI, getMutableAIState, streamUI } from "ai/rsc";
 import type { ReactNode } from "react";
 import { z } from "zod";
 import { generateId } from "ai";
-import { AI_MODEL } from "@/lib/config";
+import { MODEL, SYSTEM_PROMPT } from "@/lib/config";
+import { SmartContractUI } from "@/components/smart-contract-ui";
 
 export interface ServerMessage {
 	role: "user" | "assistant";
@@ -17,15 +18,17 @@ export interface ClientMessage {
 	display: ReactNode;
 }
 
-export async function continueConversation(
+export const continueGeneration = async (
 	input: string,
-): Promise<ClientMessage> {
+): Promise<ClientMessage> => {
 	"use server";
+	console.log("Input:", input);
 
 	const history = getMutableAIState();
 
 	const result = await streamUI({
-		model: AI_MODEL,
+		model: MODEL,
+		system: SYSTEM_PROMPT,
 		messages: [...history.get(), { role: "user", content: input }],
 		text: ({ content, done }) => {
 			if (done) {
@@ -54,13 +57,7 @@ export async function continueConversation(
 						},
 					]);
 
-					// Parse the HTML string into a React component
-					const SmartContractUI = () => (
-						// biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
-						<div dangerouslySetInnerHTML={{ __html: html }} />
-					);
-
-					return <SmartContractUI />;
+					return <SmartContractUI html={html} />;
 				},
 			},
 		},
@@ -71,11 +68,11 @@ export async function continueConversation(
 		role: "assistant",
 		display: result.value,
 	};
-}
+};
 
 export const AI = createAI<ServerMessage[], ClientMessage[]>({
 	actions: {
-		continueConversation,
+		continueGeneration,
 	},
 	initialAIState: [],
 	initialUIState: [],

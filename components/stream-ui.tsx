@@ -1,23 +1,34 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { useActions, useUIState } from "ai/rsc";
 import { generateId } from "ai";
+import { useActions, useUIState } from "ai/rsc";
 
 import type { ClientMessage } from "@/actions/ai";
+import type { ContractInfo } from "@/actions/explorer";
 
-export const StreamUI = ({ prompt }: { prompt: string }) => {
+export const StreamUI = ({
+	prompt,
+	contractData,
+}: { prompt: string; contractData: ContractInfo }) => {
 	const [input, setInput] = useState<string>("");
-	const [conversation, setConversation] = useUIState();
-	const { continueConversation } = useActions();
+	const [generation, setGeneration] = useUIState();
+	const { continueGeneration } = useActions();
 
 	const initializeConversation = useCallback(async () => {
-		if (prompt && conversation.length === 0) {
-			const message = await continueConversation(prompt);
-			setConversation([message]);
+		if (prompt && generation.length === 0) {
+			const message = await continueGeneration(prompt, contractData);
+			console.log("Message:", message);
+			setGeneration([message]);
 		}
-	}, [prompt, conversation.length, continueConversation, setConversation]);
+	}, [
+		prompt,
+		contractData,
+		generation.length,
+		continueGeneration,
+		setGeneration,
+	]);
 
 	useEffect(() => {
 		initializeConversation();
@@ -25,14 +36,14 @@ export const StreamUI = ({ prompt }: { prompt: string }) => {
 
 	const handleSendMessage = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setConversation((currentConversation: ClientMessage[]) => [
-			...currentConversation,
+		setGeneration((currentGeneration: ClientMessage[]) => [
+			...currentGeneration,
 			{ id: generateId(), role: "user", display: input },
 		]);
 
-		const message = await continueConversation(input);
+		const message = await continueGeneration(input);
 
-		setConversation((currentConversation: ClientMessage[]) => [
+		setGeneration((currentConversation: ClientMessage[]) => [
 			...currentConversation,
 			message,
 		]);
@@ -41,25 +52,25 @@ export const StreamUI = ({ prompt }: { prompt: string }) => {
 	};
 
 	return (
-		<div className="flex flex-col h-screen">
+		<div className="flex flex-col">
 			<div className="flex-grow overflow-auto p-4">
-				{conversation.map((message: ClientMessage) => (
-					<div key={message.id} className="mb-4">
+				{generation.map((message: ClientMessage) => (
+					<div key={message.id} className="mb-4 w-full mx-auto">
 						{message.display}
 					</div>
 				))}
 			</div>
-			<form onSubmit={handleSendMessage} className="p-4 border-t">
-				<div className="flex">
+			<form onSubmit={handleSendMessage} className="p-4 border-t bg-white">
+				<div className="flex w-full mx-auto">
 					<input
 						type="text"
 						value={input}
 						onChange={(event) => setInput(event.target.value)}
 						className="flex-grow mr-2 p-2 border rounded"
-						placeholder="Type your message..."
+						placeholder="Request changes here..."
 					/>
 					<button type="submit" className="bg-blue-500 text-white p-2 rounded">
-						Send
+						Submit
 					</button>
 				</div>
 			</form>
