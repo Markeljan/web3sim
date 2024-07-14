@@ -6,12 +6,11 @@ import { generateId } from "ai";
 import { useActions, useUIState } from "ai/rsc";
 
 import type { ClientMessage } from "@/actions/ai";
-import type { ContractInfo } from "@/actions/explorer";
 
 export const StreamUI = ({
 	prompt,
-	contractData,
-}: { prompt: string; contractData: ContractInfo }) => {
+	data,
+}: { prompt: string; data: Record<string, unknown> }) => {
 	const [input, setInput] = useState<string>("");
 	const [generation, setGeneration] = useUIState();
 	const { continueGeneration } = useActions();
@@ -19,17 +18,11 @@ export const StreamUI = ({
 	const initializeConversation = useCallback(async () => {
 		if (prompt && generation.length === 0) {
 			const message = await continueGeneration(
-				JSON.stringify({ prompt, contractData }),
+				JSON.stringify({ prompt, data }),
 			);
 			setGeneration([message]);
 		}
-	}, [
-		prompt,
-		contractData,
-		generation.length,
-		continueGeneration,
-		setGeneration,
-	]);
+	}, [prompt, data, generation.length, continueGeneration, setGeneration]);
 
 	useEffect(() => {
 		initializeConversation();

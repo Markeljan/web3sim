@@ -26,13 +26,14 @@ export type ContractInfo = {
 export async function getContractSourceCode({
 	apiUrl,
 	address,
+	apiKey,
 }: {
 	apiUrl: string;
 	address: string;
+	apiKey: string;
 }): Promise<Omit<ContractInfo, "chain">> {
-	const response = await fetch(
-		`${apiUrl}?module=contract&action=getsourcecode&address=${address}`,
-	);
+	const fetchUrl = `${apiUrl}?module=contract&action=getsourcecode&address=${address}&apikey=${apiKey}`;
+	const response = await fetch(fetchUrl);
 	const data = (await response.json()) as FetchAbiResponse;
 
 	if (data.status !== "1" || !data.result || data.result.length === 0) {

@@ -1,5 +1,6 @@
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createOpenAI } from "@ai-sdk/openai";
+import type { Chain } from "viem/chains";
 
 export const anthropic = createAnthropic();
 export const openai = createOpenAI();
@@ -31,6 +32,27 @@ export const DYNAMIC_ENVIRONMENT_ID = (() => {
 export const APP_URL = IS_PRODUCTION
 	? `https://${VERCEL_URL}`
 	: "http://localhost:3000";
+
+export const API_KEYS: Record<Chain["id"], string> = {
+	1: `${process.env.ETHEREUM_EXPLORER_API_KEY}`, // Ethereum mainnet
+	11155111: `${process.env.ETHEREUM_EXPLORER_API_KEY}`, // Sepolia testnet
+	17000: `${process.env.ETHEREUM_EXPLORER_API_KEY}`, // Holesky testnet
+	137: `${process.env.POLYGON_EXPLORER_API_KEY}`, // Polygon mainnet
+	80002: `${process.env.POLYGON_EXPLORER_API_KEY}`, // Mumbai testnet
+	10: `${process.env.OPTIMISM_EXPLORER_API_KEY}`, // Optimism mainnet
+	420: `${process.env.OPTIMISM_EXPLORER_API_KEY}`, // Optimism Goerli testnet
+	5000: `${process.env.MANTLE_EXPLORER_API_KEY}`, // Mantle mainnet
+	5003: `${process.env.MANTLE_EXPLORER_API_KEY}`, // Mantle testnet
+	8453: `${process.env.BASE_EXPLORER_API_KEY}`, // Base mainnet
+	84532: `${process.env.BASE_EXPLORER_API_KEY}`, // Base Sepolia testnet
+	42161: `${process.env.ARBITRUM_EXPLORER_API_KEY}`, // Arbitrum One mainnet
+	421614: `${process.env.ARBITRUM_EXPLORER_API_KEY}`, // Arbitrum Sepolia testnet
+};
+
+// return a match or BLOCK_SCOUT_API_KEY as default
+export const getExplorerApiKey = (chainId: Chain["id"]) => {
+	return API_KEYS[chainId] || `${process.env.BLOCK_SCOUT_API_KEY}`;
+};
 
 export const SYSTEM_PROMPT = `Web3 Sim AI generated Dapps for any smart contract. You are an advanced AI assistant specialized in creating complete, responsive web applications using pure HTML and Tailwind CSS. Your task is to interpret user prompts and generate a full, functional web app based on their requirements, focusing on creating visually appealing and thematic designs.
 

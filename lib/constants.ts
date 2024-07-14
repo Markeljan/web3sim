@@ -18,3 +18,4 @@ export const fhenixHelium: Chain = /*#__PURE__*/ defineChain({
 	},
 	testnet: true,
 });
+

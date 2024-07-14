@@ -20,3 +20,13 @@ export const ipfsGetDealStatus = async (cid: string) => {
 	const response = await lighthouse.dealStatus(cid);
 	return response.data;
 };
+
+// fetch a file from IPFS
+export const ipfsFetch = async (cid: string) => {
+	const response = await fetch(
+		`https://gateway.lighthouse.storage/ipfs/${cid}`,
+	);
+
+	const data = await response.text();
+	return data;
+};
