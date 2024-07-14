@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Web3Sim
+
+![telegram-cloud-photo-size-1-4945223188997057748-w](https://github.com/user-attachments/assets/b0e5417b-ee37-4e98-9ae3-7b23a248d5a7)
+
+
+## Empowering Decentralized Applications: Prompt, Click, Create
+
+Web3Sim is an AI-powered platform that revolutionizes dApp development, allowing users to create custom front-ends for decentralized applications with ease.
+
+### Features
+
+- **AI-Powered Generation**: Create dApp front-ends using simple prompts
+- **Cross-Chain Compatibility**: Deploy to multiple blockchain networks
+- **Sybil-Resistant**: Verified through Worldcoin's Proof of Humanity
+- **User-Friendly Interface**: Intuitive design for all skill levels
+- **Instant Deployment**: Generate and deploy dApps quickly
+- **Project Gallery**: Explore and learn from other projects
+- **Educational Resources**: Built-in guides and tooltips
 
 ## Getting Started
 
-First, run the development server:
+1. Visit [Web3Sim.io](https://www.web3sim.io)
+2. Verify your identity using Worldcoin
+3. Input your dApp requirements:
+   - Prompt describing desired functionality
+   - Target blockchain
+   - Smart contract address
+4. Review and customize the generated front-end
+5. Deploy your dApp
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Requirements
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Web3 wallet (e.g., MetaMask)
+- Worldcoin verification
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Documentation
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+For detailed documentation, visit [web3sim](https://web3sim.ai/).
 
-## Learn More
+## Support
 
-To learn more about Next.js, take a look at the following resources:
+If you need assistance, please open an issue or contact our support team at contact@web3sim.ai
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Acknowledgments
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Built during ETHGlobal Hackathon
+- Powered by [Dynamic](https://www.dynamic.xyz) for cross-chain functionality
+- Sybil resistance provided by [Worldcoin](https://worldcoin.org)
+
+---
+
+## Test Contracts For ETH Global
+
+- Base [0xfe2034985323df9563e1c824f3b17a22912d854e](https://base.blockscout.com/address/0xfE2034985323Df9563E1c824f3b17a22912D854E?tab=contract)
+- Arbitrum [0xbb5D04c40Fa063FAF213c4E0B8086655164269Ef](https://arbiscan.io/address/0xbb5d04c40fa063faf213c4e0b8086655164269ef)
+- Scroll [0xbb5D04c40Fa063FAF213c4E0B8086655164269Ef](https://sepolia.scrollscan.com/address/0xbb5d04c40fa063faf213c4e0b8086655164269ef)
+- Blockscout Verification [Base Contract](https://base.blockscout.com/address/0xfE2034985323Df9563E1c824f3b17a22912D854E?tab=contract)
+
+Web3Sim - Streamlining Web3 Development, One dApp at a Time.
