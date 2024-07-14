@@ -26,7 +26,7 @@ export default async function Page({
 	if (!apiUrl || !viemChain) {
 		throw new Error(`Failed to find chain or apiUrl for ${chain}`);
 	}
-
+	
 	const apiKey = getExplorerApiKey(viemChain.id);
 
 	const { contractName, abi, sourceCode } = await getContractSourceCode({

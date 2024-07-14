@@ -53,8 +53,12 @@ export const StreamUI = ({
 
 	return (
 		<div className="flex flex-col justify-between items-center w-full h-full">
+			{generation?.length === 0 ? (
+				<p className="animate-pulse size-24 my-12">Loading...</p>
+			) : null}
+
 			<div className="flex h-full overflow-auto p-4">
-				{generation.map((message: ClientMessage) => (
+				{generation.slice(-1).map((message: ClientMessage) => (
 					<div key={message.id} className="mb-4 w-full mx-auto">
 						{message.display}
 					</div>

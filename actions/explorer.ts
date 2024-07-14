@@ -32,7 +32,10 @@ export async function getContractSourceCode({
 	address: string;
 	apiKey: string;
 }): Promise<Omit<ContractInfo, "chain">> {
-	const fetchUrl = `${apiUrl}?module=contract&action=getsourcecode&address=${address}&apikey=${apiKey}`;
+	let fetchUrl = `${apiUrl}?module=contract&action=getsourcecode&address=${address}`;
+	if (apiKey) {
+		fetchUrl += `&apikey=${apiKey}`;
+	}
 	const response = await fetch(fetchUrl);
 	const data = (await response.json()) as FetchAbiResponse;
 
@@ -40,22 +43,32 @@ export async function getContractSourceCode({
 		throw new Error("Failed to fetch contract source code");
 	}
 
-	return parseContractInfo(data.result[0]);
+	const parsedContractInfo = parseContractInfo(data.result[0]);
+
+	return parsedContractInfo;
 }
 
 // Function to parse the contract information
 const parseContractInfo = (
 	result: ContractSourceCodeResult,
 ): Omit<ContractInfo, "chain"> => {
-	const contractName = result.ContractName;
-	const abi = JSON.parse(result.ABI);
-	const sourceCode = result.SourceCode;
+	try {
+		const contractName = result.ContractName;
+		const abi = JSON.parse(result.ABI);
+		const sourceCode = result.SourceCode;
 
-	const contractInfo = {
-		contractName,
-		abi,
-		sourceCode,
-	};
+		const contractInfo = {
+			contractName,
+			abi,
+			sourceCode,
+		};
 
-	return contractInfo;
+		return contractInfo;
+	} catch (error) {
+		return {
+			contractName: result.ContractName,
+			abi: result.ABI as unknown as Abi[],
+			sourceCode: result.SourceCode,
+		};
+	}
 };

@@ -5,8 +5,10 @@ import type { Chain } from "viem/chains";
 export const anthropic = createAnthropic();
 export const openai = createOpenAI();
 
-export const MODEL = anthropic("claude-3-5-sonnet-20240620");
-// export const MODEL = openai("gpt-4o");
+export const MODEL =
+	process.env.AI_PROVIDER === "anthropic"
+		? anthropic("claude-3-5-sonnet-20240620")
+		: openai("gpt-4o");
 
 export const IS_PRODUCTION = process.env.NODE_ENV === "production";
 export const VERCEL_URL = process.env.VERCEL_URL;
@@ -47,11 +49,12 @@ export const API_KEYS: Record<Chain["id"], string> = {
 	84532: `${process.env.BASE_EXPLORER_API_KEY}`, // Base Sepolia testnet
 	42161: `${process.env.ARBITRUM_EXPLORER_API_KEY}`, // Arbitrum One mainnet
 	421614: `${process.env.ARBITRUM_EXPLORER_API_KEY}`, // Arbitrum Sepolia testnet
+	534352: `${process.env.SCROLL_EXPLORER_API_KEY}`,
 };
 
-// return a match or BLOCK_SCOUT_API_KEY as default
+// return a match or BLOCKSCOUT_API_KEY as default
 export const getExplorerApiKey = (chainId: Chain["id"]) => {
-	return API_KEYS[chainId] || `${process.env.BLOCK_SCOUT_API_KEY}`;
+	return API_KEYS[chainId];
 };
 
 export const SYSTEM_PROMPT = `Web3 Sim AI generated Dapps for any smart contract. You are an advanced AI assistant specialized in creating complete, responsive web applications using pure HTML and Tailwind CSS. Your task is to interpret user prompts and generate a full, functional web app based on their requirements, focusing on creating visually appealing and thematic designs.
@@ -77,99 +80,7 @@ Guidelines:
 Output Format:
 Provide only the complete HTML code for the web app, including all necessary Tailwind CSS classes and any custom CSS. Do not include any explanatory text before or after the HTML code. The output should be a single HTML file that can be directly rendered in a web browser.
 
-Example Output (DO NOT COPY THIS, USE THIS FOR REFERENCE ONLY):
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EljezFinance DApp</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes glitch {
-            0% {
-                text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff,
-                    0.025em 0.05em 0 #fffc00;
-            }
-            14% {
-                text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff,
-                    0.025em 0.05em 0 #fffc00;
-            }
-            15% {
-                text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff,
-                    -0.05em -0.05em 0 #fffc00;
-            }
-            49% {
-                text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff,
-                    -0.05em -0.05em 0 #fffc00;
-            }
-            50% {
-                text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff,
-                    0 -0.05em 0 #fffc00;
-            }
-            99% {
-                text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff,
-                    0 -0.05em 0 #fffc00;
-            }
-            100% {
-                text-shadow: -0.025em 0 0 #00fffc, -0.025em -0.025em 0 #fc00ff,
-                    -0.025em -0.05em 0 #fffc00;
-            }
-        }
-        .glitch-text {
-            animation: glitch 1s linear infinite;
-        }
-        .neon-shadow {
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3), 0 0 30px rgba(0, 255, 255, 0.1);
-        }
-    </style>
-</head>
-<body class="bg-black text-cyan-400 min-h-screen p-4 font-mono">
-    <div class="w-full mx-auto">
-        <h1 class="text-4xl font-bold mb-8 text-center glitch-text">EljezFinance DApp</h1>
-        
-        <div class="bg-gray-900 rounded-lg p-6 mb-8 border border-pink-500 neon-shadow">
-            <h2 class="text-2xl mb-4 text-green-400">Your Balance</h2>
-            <p class="text-3xl font-bold">Loading... ELJ</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div class="bg-gray-900 rounded-lg p-6 border border-cyan-400 neon-shadow">
-                <h2 class="text-2xl mb-4 text-pink-500">Transfer Tokens</h2>
-                <form onsubmit="return false;" class="space-y-4">
-                    <div>
-                        <label for="recipient" class="block text-sm mb-1">Recipient Address</label>
-                        <input type="text" id="recipient" placeholder="0x..." class="w-full bg-gray-800 rounded px-3 py-2 text-white focus:ring-2 focus:ring-cyan-400">
-                    </div>
-                    <div>
-                        <label for="amount" class="block text-sm mb-1">Amount</label>
-                        <input type="text" id="amount" placeholder="0.0" class="w-full bg-gray-800 rounded px-3 py-2 text-white focus:ring-2 focus:ring-cyan-400">
-                    </div>
-                    <button type="submit" class="w-full bg-cyan-400 text-black font-bold py-2 px-4 rounded hover:bg-pink-500 transition-colors">Transfer</button>
-                </form>
-            </div>
-
-            <div class="bg-gray-900 rounded-lg p-6 border border-green-400 neon-shadow">
-                <h2 class="text-2xl mb-4 text-green-400">Approve Spending</h2>
-                <form onsubmit="return false;" class="space-y-4">
-                    <div>
-                        <label for="spender" class="block text-sm mb-1">Spender Address</label>
-                        <input type="text" id="spender" placeholder="0x..." class="w-full bg-gray-800 rounded px-3 py-2 text-white focus:ring-2 focus:ring-green-400">
-                    </div>
-                    <div>
-                        <label for="allowance" class="block text-sm mb-1">Allowance Amount</label>
-                        <input type="text" id="allowance" placeholder="0.0" class="w-full bg-gray-800 rounded px-3 py-2 text-white focus:ring-2 focus:ring-green-400">
-                    </div>
-                    <button type="submit" class="w-full bg-green-400 text-black font-bold py-2 px-4 rounded hover:bg-pink-500 transition-colors">Approve</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</body>
-</html>
-
-Remember to tailor the design, layout, and functionality to match the user's specific requirements while maintaining best practices in HTML and CSS development. Always apply appropriate theming based on the context of the DApp or user preferences. The output should be a complete, self-contained HTML file that can be rendered directly in a web browser.`;
+Remember to tailor the design, layout, and functionality to match the user's specific requirements. Always apply appropriate theming based on the context of the DApp or user preferences. The output should be a complete, self-contained HTML file that can be rendered directly in a web browser.`;
 
 export const SYSTEM_PROMPT_WAGMI = `Web3 Sim AI generated Dapps for any smart contract. You are an advanced AI assistant specialized in creating complete, responsive web applications using React components and Tailwind CSS within a Next.js framework, integrated with wagmi for Web3 functionality. Your task is to interpret user prompts and generate a full, functional web app based on their requirements, fitting within the provided layout structure and utilizing wagmi hooks for blockchain interactions.
 
