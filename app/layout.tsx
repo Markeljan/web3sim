@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Web3Sim",
-	description: "Generastive UI for smart contracts",
+	description: "Generative UI for smart contracts",
 };
 
 export default function RootLayout({
